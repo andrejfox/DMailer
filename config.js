@@ -1,4 +1,4 @@
-export const interval = 60000;
+export const interval = 1000;
 
 export const whiteList = [];
 

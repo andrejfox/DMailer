@@ -9,18 +9,51 @@ import {
   isInWhiteList,
 } from "./utils.js";
 
-setInterval(readeMail, interval);
+async function execute1() {
+  while (true) {
+    await new Promise((resolve) => setTimeout(resolve, interval));
+    await mailLoop();
+  }
+}
 
-async function readeMail() {
+execute1();
+
+async function mailLoop() {
   try {
     const lastMessageID = JSON.parse(
       fs.readFileSync("./data/lastMessageID.json", "utf-8")
     );
 
-    const emailIDs = await getEmailIDs();
+    const fetchedEmailIDs = await getEmailIDs();
 
-    for (let i = 0; emailIDs.messages[i].id !== lastMessageID.id; i++) {
-      const mail = await readMail(emailIDs.messages[i].id);
+    if (fetchedEmailIDs.messages[0].id === lastMessageID) return;
+
+    let emailIDs = [];
+
+    for (let i = 0; fetchedEmailIDs.messages[i].id !== lastMessageID; i++) {
+      if (i >= 99) break;
+      emailIDs.unshift(fetchedEmailIDs.messages[i].id);
+    }
+
+    if (emailIDs.length >= 99) {
+      console.log(`No mails mached to: ${lastMessageID}`);
+
+      const email = await readMail(emailIDs[emailIDs.length - 1]);
+
+      if (!email.labelIds.includes("INBOX")) {
+        const newData = JSON.stringify(emailIDs[emailIDs.length - 1]);
+        fs.writeFileSync("./data/lastMessageID.json", newData);
+        console.log(
+          `Trigger ID has been set to: ${emailIDs[emailIDs.length - 1]}`
+        );
+        return;
+      } else {
+        emailIDs = [emailIDs[emailIDs.length - 1]];
+      }
+    }
+
+    for (const id of emailIDs) {
+      const mail = await readMail(id);
 
       const headers = mail.payload.headers;
       const from = headers.find((header) => header.name === "From").value;
@@ -38,14 +71,14 @@ async function readeMail() {
 
         await sendEmbed(from, subject, body);
 
-        if (extraction[0].size !== 0) await sendAtt(mail.id, extraction[0]);
+        if (!(extraction[0].size === 0)) await sendAtt(mail.id, extraction[0]);
       }
     }
 
-    const newData = JSON.stringify(emailIDs.messages[0]);
+    const newData = JSON.stringify(emailIDs[emailIDs.length - 1]);
     fs.writeFileSync("./data/lastMessageID.json", newData);
-    console.log(`Trigger ID has been set to: ${emailIDs.messages[0].id}`);
+    console.log(`Trigger ID has been set to: ${emailIDs[emailIDs.length - 1]}`);
   } catch (err) {
-    console.error(`Something went wrong in app.js: ${err}`);
+    console.error(`Something went wrong in mailLoop: ${err}`);
   }
 }

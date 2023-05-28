@@ -101,15 +101,17 @@ export async function sendAtt(messageID, map) {
 
     await Promise.all(promiseArr);
 
-    splitArrayIntoChunks(arr).forEach(async (arr) => {
+    const arrInChunks = await splitArrayIntoChunks(arr);
+
+    for (const miniArr of arrInChunks) {
       await webhookClient
         .send({
-          files: arr,
+          files: miniArr,
         })
         .then(() => console.log(`Sent attachments`))
         .catch(console.error);
 
-      arr.forEach((data) => {
+      miniArr.forEach((data) => {
         fs.unlink(`./attachments/${data.name}`, (err) => {
           if (err) {
             console.error("Error deleting attachment file:", err);
@@ -118,7 +120,8 @@ export async function sendAtt(messageID, map) {
           }
         });
       });
-    });
+      await Promise.all(promiseArr);
+    }
   } catch (err) {
     console.error(`Something went wrong trying to send a attachment: ${err}`);
   }
@@ -154,7 +157,7 @@ function splitString(str) {
   }
 }
 
-function splitArrayIntoChunks(array) {
+async function splitArrayIntoChunks(array) {
   try {
     const result = [];
 
