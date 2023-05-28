@@ -1,3 +1,5 @@
+export const interval = 60000;
+
 export const whiteList = [];
 
 export const users = new Map();
