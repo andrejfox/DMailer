@@ -1,4 +1,5 @@
 import { getEmailIDs, readMail } from "./controllers.js";
+import { interval } from "./config.js";
 import fs from "fs";
 import {
   base64ToUTF8,
@@ -8,37 +9,43 @@ import {
   isInWhiteList,
 } from "./utils.js";
 
-try {
-  const lastMessageID = JSON.parse(
-    fs.readFileSync("./data/lastMessageID.json", "utf-8")
-  );
+setInterval(readeMail, interval);
 
-  const emailIDs = await getEmailIDs();
+async function readeMail() {
+  try {
+    const lastMessageID = JSON.parse(
+      fs.readFileSync("./data/lastMessageID.json", "utf-8")
+    );
 
-  for (let i = 0; emailIDs.messages[i].id !== lastMessageID.id; i++) {
-    const mail = await readMail(emailIDs.messages[i].id);
+    const emailIDs = await getEmailIDs();
 
-    const headers = mail.payload.headers;
-    const from = headers.find((header) => header.name === "From").value;
+    for (let i = 0; emailIDs.messages[i].id !== lastMessageID.id; i++) {
+      const mail = await readMail(emailIDs.messages[i].id);
 
-    if ((await isInWhiteList(from)) && mail.labelIds.includes("INBOX")) {
-      const subject = headers.find((header) => header.name === "Subject").value;
+      const headers = mail.payload.headers;
+      const from = headers.find((header) => header.name === "From").value;
 
-      const extraction = await extract(mail);
+      if ((await isInWhiteList(from)) && mail.labelIds.includes("INBOX")) {
+        const subject = headers.find(
+          (header) => header.name === "Subject"
+        ).value;
 
-      const body = extraction[1]
-        .map((element) => base64ToUTF8(element))
-        .join("\n");
+        const extraction = await extract(mail);
 
-      await sendEmbed(from, subject, body);
+        const body = extraction[1]
+          .map((element) => base64ToUTF8(element))
+          .join("\n");
 
-      if (extraction[0].size !== 0) await sendAtt(mail.id, extraction[0]);
+        await sendEmbed(from, subject, body);
+
+        if (extraction[0].size !== 0) await sendAtt(mail.id, extraction[0]);
+      }
     }
-  }
 
-  const newData = JSON.stringify(emailIDs.messages[0]);
-  fs.writeFileSync("./data/lastMessageID.json", newData);
-  console.log(`Trigger ID has been set to: ${emailIDs.messages[0].id}`);
-} catch (err) {
-  console.error(`Something went wrong in app.js: ${err}`);
+    const newData = JSON.stringify(emailIDs.messages[0]);
+    fs.writeFileSync("./data/lastMessageID.json", newData);
+    console.log(`Trigger ID has been set to: ${emailIDs.messages[0].id}`);
+  } catch (err) {
+    console.error(`Something went wrong in app.js: ${err}`);
+  }
 }
