@@ -37,17 +37,8 @@ export async function extract(json) {
 
 export async function sendEmbed(from, subject, body) {
   try {
-    const avatar = users.get(from)
-      ? users.get(from).pfp
-        ? users.get(from).pfp
-        : "https://imgur.com/5rdlSKQ.png"
-      : "https://imgur.com/5rdlSKQ.png";
-
-    const embedColour = users.get(from)
-      ? users.get(from).embedColour
-        ? users.get(from).embedColour
-        : 0x000000
-      : 0x000000;
+    const avatar = users.get(from)?.pfp ?? "https://imgur.com/5rdlSKQ.png";
+    const embedColour = users.get(from)?.embedColour ?? 0x000000;
 
     const bodyArr = splitString(body);
     const firstbody = bodyArr.shift();
