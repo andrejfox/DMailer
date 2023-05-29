@@ -30,8 +30,13 @@ async function mailLoop() {
 
     let emailIDs = [];
 
-    for (let i = 0; fetchedEmailIDs.messages[i].id !== lastMessageID; i++) {
-      if (i >= 99) break;
+    for (let i = 0; fetchedEmailIDs.messages[i]?.id !== lastMessageID; i++) {
+      if (
+        i >= fetchedEmailIDs.messages[i]?.id ||
+        !fetchedEmailIDs.messages[i]?.id
+      ) {
+        break;
+      }
       emailIDs.unshift(fetchedEmailIDs.messages[i].id);
     }
 
