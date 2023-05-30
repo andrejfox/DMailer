@@ -2,6 +2,10 @@
 
 DMailer is a [node.js](https://nodejs.org/) app that sends all your Gmails to a discrod channel.
 
+## Preview 
+
+![new project](./pictures/image34.png)
+
 ## Requirements
 
 - A Gmail acc (yes it only works for Gmail).
