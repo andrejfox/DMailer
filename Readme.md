@@ -118,38 +118,32 @@ Then copy the webhook URL and save it.
 
 First connect to your linux server.
 first we check for updates:
-
 ```sh
 sudo apt update
 ```
 
 Now will need to install node.js, you will do that by executing:
-
 ```sh
 sudo apt install nodejs
 ```
 
 Make sure to have git:
-
 ```sh
 sudo apt install git-all
 ```
 
 And with that we are reardy to install the repo:
-
 ```sh
 git clone https://github.com/ANDREJ6693/DMailer.git
 ```
 
 Then install the node packages
-
 ```sh
 npm i googleapis axios discord.js dotenv
 ```
 
 Now we'll have to change a few files, lets start with .env
 cd into DMailer directory and rename template.env to .env, and than enter it with vim or nano:
-
 ```sh
 mv template.env .env
 nano .env
@@ -159,7 +153,6 @@ There will input the data the .env file requests.
 ![env](./pictures/image29.png)
 
 And the last step is to edit the config.js, there you can change the check interval, the whitelist and add custom users:
-
 ```sh
 nano config.js
 ```
@@ -167,7 +160,6 @@ nano config.js
 ![config](./pictures/image35.png)
 
 With that you are good to go, just run:
-
 ```sh
 node app.js
 ```
