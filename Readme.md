@@ -1,17 +1,17 @@
 # DMailer
 
-DMailer is a [node.js](https://nodejs.org/) app that sends all your gmails to a dicrod channel.
+DMailer is a [node.js](https://nodejs.org/) app that sends all your Gmails to a discrod channel.
 
 ## Requirements
 
-- A Gmail acc (yes it only works for gmail).
-- A linux server to run the app.
+- A Gmail acc (yes it only works for Gmail).
+- A Linux server to run the app.
 
 ## Tutorial
 
 ### Create a New Google Console Project
 
-In order to use any Google API, there are some prerequisite steps we need to perform. Let's go through these.
+To use any Google API, there are some prerequisite steps we need to perform. Let's go through these.
 To use any Google API, we first need to create a project in the Google console. Head over to the [Google Cloud Platform](https://console.cloud.google.com) and login, then click select project.
 ![select a project](./pictures/image1.png)
 
@@ -26,28 +26,28 @@ Enter the name you wish to use for the project and click create. And now in a fe
 Firs click select project.
 ![select project](./pictures/image4.png)
 
-Then, cick on the APIs & Services tab and select Enable APIs & services.
+Then, click on the APIs & Services tab and select Enable APIs & services.
 ![APIs & Services](./pictures/image5.png)
 
 Click ENABLE APIS & SERVICES.
-![enable gmail api 1](./pictures/image31.png)
+![enable Gmail API 1](./pictures/image31.png)
 
-Search for gmail api and select it.
-![enable gmail api 2](./pictures/image32.png)
+Search for Gmail API and select it.
+![enable Gmail API 2](./pictures/image32.png)
 
 Then click enable.
-![enable gmail api 3](./pictures/image33.png)
+![enable Gmail API 3](./pictures/image33.png)
 
 ### Add OAuth Consent Screen
 
 Next, we'll add a new OAuth consent screen with some configurations. Inside your project's dashboard, head over to the APIs & Services screen and go to OAuth consent screen, there choose external and click create.
 ![OAuth consent screen 1](./pictures/image6.png)
 
-You'll then be prompted to enter some app information. Add that information and click continue
+You'll then be prompted to enter some app information. Add that information and click continue.
 ![OAuth consent screen 2](./pictures/image7.png)
 ![OAuth consent screen 3](./pictures/image8.png)
 
-We'll use the default scopes available. So on the next screen, select Save and Continue as it is.
+We'll use the default scopes available. So, on the next screen, select Save and Continue as it is.
 ![OAuth consent screen 4](./pictures/image9.png)
 
 Then, we'll add our own email or an email you'd use to test the app.
@@ -60,7 +60,7 @@ Now we'll go over to the Credentials tab to create an OAuth client ID.
 ![Credentials](./pictures/image12.png)
 
 As you can see, we currently do not have any OAuth 2.0 Client ID.
-So we'll go ahead and create one by clicking on Create Credentials.
+So, we'll go ahead and create one by clicking on Create Credentials.
 And consequently, select OAuth client ID in the dropdown.
 ![Create credentials](./pictures/image13.png)
 
@@ -84,7 +84,7 @@ To do that, as a first step, we'll visit the redirect URI we added previously.
 Head over to [https://developers.google.com/oauthplayground](https://developers.google.com/oauthplayground).
 We want to use Gmail API, so we'll put in our scope to authorize the Gmail API.
 Put the `https://mail.google.com` scope inside it.
-After that, select the gear icon on the right and leave everything as it is.Tick the Use your own OAuth credentials checkbox and enter your OAuth 2 client-id and client-secret.Then click Close.
+After that, select the gear icon on the right and leave everything as it is. Click the Use your own OAuth credentials checkbox and enter your OAuth 2 client-id and client-secret. Then click Close.
 After that, next to the scope, click on Authorize APIs
 ![Authorize APIs](./pictures/image18.png)
 
@@ -95,7 +95,7 @@ Then it might prompt you that the app is still unverified.
 We'll skip the verification since it takes up to two or three days.
 ![continue1](./pictures/image20.png)
 
-After you click Continue, you'll see your Google Cloud app asking for some permissions.We need to select Continue here as well. This will allow us to do any mail operations from our test account via the Gmail API.
+After you click Continue, you'll see your Google Cloud app asking for some permissions. We need to select Continue here as well. This will allow us to do any mail operations from our test account via the Gmail API.
 ![continue2](./pictures/image21.png)
 
 Finally, you should be redirected back to the playground.
@@ -104,19 +104,19 @@ Notice how we get back some authorization code now. We will use it to generate r
 
 Write the refresh token down somewhere, we'll need it later.
 And that's it! You're all set up to start using the Gmail API in a Node.js application.
-![copy refresh url](./pictures/image23.png)
+![copy refresh URL](./pictures/image23.png)
 
 ### Get the webhook URL
 
 We also can't forget to get the webhook URL from discord.
-You can find it in your discord chanell settings under integrations.
+You can find it in your discord channel settings under integrations.
 Then copy the webhook URL and save it.
 ![webhook](./pictures/image27.png)
 ![webhook](./pictures/image28.png)
 
 ### Setting up the app
 
-First connect to your linux server.
+First connect to your Linux server.
 first we check for updates:
 ```sh
 sudo apt update
@@ -132,7 +132,7 @@ Make sure to have git:
 sudo apt install git-all
 ```
 
-And with that we are reardy to install the repo:
+And with that we are ready to install the repo:
 ```sh
 git clone https://github.com/ANDREJ6693/DMailer.git
 ```
