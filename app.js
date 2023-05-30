@@ -63,20 +63,24 @@ async function mailLoop() {
       const headers = mail.payload.headers;
       const from = headers.find((header) => header.name === "From").value;
 
-      if ((await isInWhiteList(from)) && mail.labelIds.includes("INBOX")) {
-        const subject = headers.find(
-          (header) => header.name === "Subject"
-        ).value;
+      const whiteList = await isInWhiteList(from);
+
+      if (whiteList && mail.labelIds.includes("INBOX")) {
+        const { value } = headers.find((header) => header.name === "Subject");
 
         const extraction = await extract(mail);
 
+        //extraction[1] is a array with bodys
         const body = extraction[1]
           .map((element) => base64ToUTF8(element))
           .join("\n");
 
-        await sendEmbed(from, subject, body);
+        await sendEmbed(from, value, body);
 
-        if (!(extraction[0].size === 0)) await sendAtt(mail.id, extraction[0]);
+        //extraction[0] is a array with attachmentIDs
+        if (!(extraction[0].size === 0)) {
+          await sendAtt(mail.id, extraction[0]);
+        }
       }
     }
 

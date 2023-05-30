@@ -111,7 +111,6 @@ export async function sendAtt(messageID, map) {
           }
         });
       });
-      await Promise.all(promiseArr);
     }
   } catch (err) {
     console.error(`Something went wrong trying to send a attachment: ${err}`);
