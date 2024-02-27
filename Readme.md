@@ -124,6 +124,7 @@ First connect to your Linux server.
 first we check for updates:
 ```sh
 sudo apt update
+sudo apt upgrade
 ```
 
 Now will need to install node.js, you will do that by executing:
