@@ -1,4 +1,5 @@
-# DMailer (It will only work for a week :(, i dont know how to fix)
+# DMailer
+# It will only work for a week :(, i dont know how to fix
 
 DMailer is a [node.js](https://nodejs.org/) app that sends all your Gmails to a discrod channel.
 
